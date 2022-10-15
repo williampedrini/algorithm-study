@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * @see <a href="https://leetcode.com/problems/contains-duplicate/">Neet Code</a>
+ * @see <a href="https://leetcode.com/problems/longest-consecutive-sequence/">Neet Code</a>
  */
 public class LongestConsecutiveSequence {
 
