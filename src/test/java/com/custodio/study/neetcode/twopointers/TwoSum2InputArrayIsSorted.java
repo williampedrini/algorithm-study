@@ -46,6 +46,21 @@ public class TwoSum2InputArrayIsSorted {
     }
 
     public int[] solution(final int[] numbers, final int target) {
+        var leftIndex = 0;
+        var rightIndex = numbers.length - 1;
+        while (leftIndex < rightIndex) {
+            final var left = numbers[leftIndex];
+            final var right = numbers[rightIndex];
+            if (left + right == target) {
+                return new int[]{leftIndex + 1, rightIndex + 1};
+            }
+            if (left + right < target) {
+                leftIndex++;
+            }
+            if (left + right > target) {
+                rightIndex--;
+            }
+        }
         return null;
     }
 }

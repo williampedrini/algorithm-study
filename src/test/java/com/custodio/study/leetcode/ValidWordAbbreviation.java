@@ -2,8 +2,7 @@ package com.custodio.study.leetcode;
 
 import org.junit.Test;
 
-import static java.lang.Character.isDigit;
-import static java.lang.Character.isLetter;
+import static java.lang.Character.*;
 import static java.lang.Integer.parseInt;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -113,58 +112,35 @@ public class ValidWordAbbreviation {
     }
 
     public boolean solution(final String word, final String abbreviation) {
-        if (word.length() < abbreviation.length()) {
-            return false;
+        if (word.isBlank() || word.equals(abbreviation)) {
+            return true;
         }
 
         var wordIndex = 0;
         var abbreviationIndex = 0;
-        var abbreviationNumberBuilder = new StringBuilder();
         while (wordIndex < word.length() && abbreviationIndex < abbreviation.length()) {
+            var currentAbbreviationCharacter = abbreviation.charAt(abbreviationIndex);
+            var currentWordCharacter = word.charAt(wordIndex);
 
-            final var abbreviationCharacter = abbreviation.charAt(abbreviationIndex);
-            if (isLetter(abbreviationCharacter)) {
-                final var abbreviationNumber = abbreviationNumberBuilder.toString();
-                if (!abbreviationNumber.isEmpty()) {
-                    wordIndex += parseInt(abbreviationNumber);
-                    abbreviationNumberBuilder = new StringBuilder();
-                }
-
-                if (wordIndex < word.length() && word.charAt(wordIndex) == abbreviationCharacter) {
-                    wordIndex++;
+            if (isDigit(currentAbbreviationCharacter) && currentAbbreviationCharacter != '0') {
+                final var numberBuilder = new StringBuilder();
+                while (abbreviationIndex < abbreviation.length() && isDigit(abbreviation.charAt(abbreviationIndex))) {
+                    numberBuilder.append(abbreviation.charAt(abbreviationIndex));
                     abbreviationIndex++;
-                    continue;
                 }
+                wordIndex = parseInt(numberBuilder.toString()) + wordIndex;
+                continue;
+            }
+
+            if (currentWordCharacter == currentAbbreviationCharacter) {
+                abbreviationIndex++;
+                wordIndex++;
+            } else {
                 return false;
             }
-
-            if (isDigit(abbreviationCharacter)) {
-                if (abbreviationIndex == 0 && abbreviationCharacter == '0') {
-                    return false;
-                }
-                if (abbreviationIndex > 0 && isLetter(abbreviation.charAt(abbreviationIndex - 1)) && abbreviationCharacter == '0') {
-                    return false;
-                }
-                abbreviationNumberBuilder.append(abbreviationCharacter);
-                abbreviationIndex++;
-            }
         }
 
-        final var abbreviationNumber = abbreviationNumberBuilder.toString();
-        if (wordIndex < word.length() && abbreviationNumber.isEmpty()) {
-            return false;
-        }
-        final var missingCharactersToRead = word.length() - wordIndex;
-        if (wordIndex < word.length() && parseInt(abbreviationNumber) != missingCharactersToRead) {
-            return false;
-        }
-
-        if (abbreviationIndex == abbreviation.length() - 1) {
-            final var abbreviationCharacter = abbreviation.charAt(abbreviationIndex);
-            final var wordCharacter = word.charAt(wordIndex - 1);
-            return abbreviationCharacter == wordCharacter;
-        }
-        return true;
+        return wordIndex == word.length() && abbreviationIndex == abbreviation.length();
     }
 }
 

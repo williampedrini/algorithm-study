@@ -1,7 +1,11 @@
 package com.custodio.study.neetcode.arrayshashing;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static java.lang.Math.max;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toSet;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @see <a href="https://leetcode.com/problems/longest-consecutive-sequence/">Neet Code</a>
@@ -16,10 +20,25 @@ public class LongestConsecutiveSequence {
         final var actual = solution(input);
         //then
         final var expected = 4;
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     public int solution(final int[] input) {
-        return -1;
+        final var numbers = stream(input).boxed().collect(toSet());
+
+        var longestConsecutiveSequence = 0;
+
+        for (var number : input) {
+            var predecessor = number - 1;
+            if (numbers.contains(predecessor)) {
+                continue;
+            }
+            var counter = 0;
+            while (numbers.contains(number + counter)) {
+                counter++;
+            }
+            longestConsecutiveSequence = max(longestConsecutiveSequence, counter);
+        }
+        return longestConsecutiveSequence;
     }
 }

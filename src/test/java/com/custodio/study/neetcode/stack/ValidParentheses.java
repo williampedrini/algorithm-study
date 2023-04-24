@@ -2,6 +2,8 @@ package com.custodio.study.neetcode.stack;
 
 import org.junit.Test;
 
+import java.util.Stack;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -56,7 +58,57 @@ public class ValidParentheses {
         assertFalse(actual);
     }
 
-    public boolean isValid(final String text) {
+    public boolean isValid(final String expression) {
+        final var expressions = new Stack<Character>();
+        for (final var character : expression.toCharArray()) {
+            if (isOpeningSymbol(character)) {
+                expressions.push(character);
+            }
+            if (isClosingSymbol(character)) {
+                if (expressions.isEmpty()) {
+                    return false;
+                }
+                final var openSymbol = expressions.pop();
+                if (isNotExpectedClosingSymbol(character, openSymbol)) {
+                    return false;
+                }
+            }
+        }
+        return expressions.isEmpty();
+    }
+
+    public boolean isNotExpectedClosingSymbol(final Character actualCloseSymbol, final Character expectedOpenSymbol) {
+        return !isExpectedClosingSymbol(actualCloseSymbol, expectedOpenSymbol);
+    }
+
+    public boolean isExpectedClosingSymbol(final Character actualCloseSymbol, final Character expectedOpenSymbol) {
+        for (final var token : VALID_TOKENS) {
+            final var openSymbol = token[0];
+            if (expectedOpenSymbol == openSymbol) {
+                final var expectedCloseSymbol = token[1];
+                return actualCloseSymbol == expectedCloseSymbol;
+            }
+        }
+        return false;
+    }
+
+    public boolean isClosingSymbol(final Character character) {
+        for (final var token : VALID_TOKENS) {
+            final var symbol = token[1];
+            if (character == symbol) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isOpeningSymbol(final Character character) {
+        for (final var token : VALID_TOKENS) {
+            final var symbol = token[0];
+            if (character == symbol) {
+                return true;
+            }
+        }
         return false;
     }
 }

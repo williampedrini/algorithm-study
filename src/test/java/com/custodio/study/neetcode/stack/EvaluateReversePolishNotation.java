@@ -2,6 +2,10 @@ package com.custodio.study.neetcode.stack;
 
 import org.junit.Test;
 
+import java.util.Map;
+import java.util.Stack;
+import java.util.function.BiFunction;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -43,6 +47,24 @@ public class EvaluateReversePolishNotation {
     }
 
     public int solution(final String[] characters) {
-        return -1;
+        final var operations = Map.of(
+                "+", Integer::sum,
+                "-", (number1, number2) -> number1 - number2,
+                "*", (number1, number2) -> number2 * number1,
+                "/", (BiFunction<Integer, Integer, Integer>) (number1, number2) -> number2 / number1
+        );
+        final var numbers = new Stack<Integer>();
+        for (final var character : characters) {
+            final var operation = operations.get(character);
+            if (operation == null) {
+                numbers.push(Integer.valueOf(character));
+                continue;
+            }
+            final var number1 = numbers.pop();
+            final var number2 = numbers.pop();
+            final var result = operation.apply(number1, number2);
+            numbers.push(result);
+        }
+        return numbers.pop();
     }
 }

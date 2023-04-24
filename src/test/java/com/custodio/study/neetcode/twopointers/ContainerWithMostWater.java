@@ -21,6 +21,23 @@ public class ContainerWithMostWater {
     }
 
     public int maxArea(final int[] heights) {
-        return -1;
+        var maxArea = 0;
+        var leftIndex = 0;
+        var rightIndex = heights.length - 1;
+        while (leftIndex < rightIndex) {
+            final var leftHeight = heights[leftIndex];
+            final var rightHeight = heights[rightIndex];
+            final var length = rightIndex - leftIndex;
+            final var height = Math.min(leftHeight, rightHeight);
+            final var area = length * height;
+            maxArea = Math.max(maxArea, area);
+            if (leftHeight >= rightHeight) {
+                rightIndex--;
+            }
+            if (leftHeight < rightHeight) {
+                leftIndex++;
+            }
+        }
+        return maxArea;
     }
 }

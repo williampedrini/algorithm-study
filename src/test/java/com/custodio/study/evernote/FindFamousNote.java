@@ -24,7 +24,7 @@ import static org.junit.Assert.assertNull;
   Definitions:
 
   interface Note {
-    // Returns true iff this note links to n2. This is a unidirectional relationship
+    // Returns true if this note links to n2. This is a unidirectional relationship
     boolean linksTo(Note n2);
   }
 
