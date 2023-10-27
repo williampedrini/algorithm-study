@@ -2,6 +2,9 @@ package com.custodio.study.neetcode.twopointers;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashMap;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -21,6 +24,22 @@ public class ContainerWithMostWater {
     }
 
     public int maxArea(final int[] heights) {
-        return -1;
+        var leftIndex = 0;
+        var rightIndex = heights.length - 1;
+        var maximumArea = 0;
+        while (leftIndex < rightIndex) {
+            final var left = heights[leftIndex];
+            final var right = heights[rightIndex];
+            final var height = Math.min(left, right);
+            final var width = rightIndex - leftIndex;
+            final var area = height * width;
+            maximumArea = Math.max(maximumArea, area);
+            if (left > right) {
+                rightIndex--;
+            } else {
+                leftIndex++;
+            }
+        }
+        return maximumArea;
     }
 }

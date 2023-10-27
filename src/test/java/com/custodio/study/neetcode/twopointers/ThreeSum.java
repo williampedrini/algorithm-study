@@ -2,7 +2,7 @@ package com.custodio.study.neetcode.twopointers;
 
 import org.junit.Test;
 
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -23,7 +23,42 @@ public class ThreeSum {
         assertEquals(expected, actual);
     }
 
-    public List<List<Integer>> solution(final int[] numbersArray) {
-        return null;
+    public List<List<Integer>> solution(final int[] numbers) {
+        // We want to sort it to avoid duplications in terms of possible combinations.
+        Arrays.sort(numbers);
+
+        final var results = new HashSet<List<Integer>>();
+
+        for (var index = 0; index < numbers.length; index++) {
+            final var number = numbers[index];
+            if (index > 0 && number == numbers[index - 1]) {
+                continue;
+            }
+            final var subNumbersArray = Arrays.copyOfRange(numbers, index + 1, numbers.length);
+            results.addAll(solution(subNumbersArray, number * -1));
+        }
+        return new ArrayList<>(results);
+    }
+
+    private List<List<Integer>> solution(final int[] numbers, final int target) {
+        var leftIndex = 0;
+        var rightIndex = numbers.length - 1;
+        var results = new ArrayList<List<Integer>>();
+        while (leftIndex < rightIndex) {
+            final var left = numbers[leftIndex];
+            final var right = numbers[rightIndex];
+            if (left + right == target) {
+                final var result = Arrays.asList(target * -1, left, right);
+                results.add(result);
+                leftIndex++;
+                continue;
+            }
+            if (left + right > target) {
+                rightIndex--;
+                continue;
+            }
+            leftIndex++;
+        }
+        return results;
     }
 }
