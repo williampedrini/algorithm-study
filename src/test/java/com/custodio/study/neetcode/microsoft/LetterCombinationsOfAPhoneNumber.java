@@ -45,22 +45,17 @@ public class LetterCombinationsOfAPhoneNumber
 
     private void solution(final int currentDigitIndex, final String digits, final String combination, final Collection<String> combinations)
     {
-        // We will only stop when we reach the mandatory size for the combination, which is the same size as the digits provided. E.g: 23 -> ad
+        //If the size of the combinations and the number of digits matches, it means we already have a combination.
         if (combination.length() == digits.length())
         {
-            if (!combination.isEmpty())
-            {
-                combinations.add(combination);
-            }
+            combinations.add(combination);
             return;
         }
 
-        // We need to get the current digit to be used for the combination.
+        //Now we need to get the current digit and their possible letters.
         final var digit = digits.charAt(currentDigitIndex);
-        final var letters = DIGIT_TO_LETTER.get(digit);
-
-        //We will iterate over each possible letter provided by the current digit and concatenate with the current combination.
-        for (var letter : letters)
+        final var letters = DIGIT_TO_LETTER.getOrDefault(digit, new ArrayList<>());
+        for (final var letter : letters)
         {
             solution(currentDigitIndex + 1, digits, combination + letter, combinations);
         }

@@ -1,4 +1,4 @@
-package com.custodio.study.revolut;
+package com.custodio.study.revolut.loadbalancer;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -34,38 +34,36 @@ public class LongestPalindromicSubstring
         //Ot the right one reaches the end of the array.
         //To calculate the longest, I will use a priority queue, which will use the size of the string as a comparator.
 
-        final var words = new PriorityQueue<String>((string1, string2) -> compare(string2.length(), string1.length()));
+        final var palindromes = new PriorityQueue<String>((word1, word2) -> compare(word2.length(), word1.length()));
 
         for (var index = 0; index < word.length(); index++)
         {
-            //There is two cases. When the word length is even or odd.
-
-            for (int left = index, right = index; left > -1 && right < word.length(); left--, right++)
+            //When the size of the string id odd.
+            for (int leftIndex = index, rightIndex = index; leftIndex > -1 && rightIndex < word.length(); leftIndex--, rightIndex++)
             {
-                final var leftLetter = word.charAt(left);
-                final var rightLetter = word.charAt(right);
-                if (leftLetter == rightLetter)
-                {
-                    final var substring = word.substring(left, right + 1);
-                    words.add(substring);
+                final var left = word.charAt(leftIndex);
+                final var right = word.charAt(rightIndex);
+                if(left == right) {
+                    final var palindrome = word.substring(leftIndex, rightIndex + 1);
+                    palindromes.add(palindrome);
                     continue;
                 }
                 break;
             }
 
-            for (int left = index, right = index + 1; left > -1 && right < word.length(); left--, right++)
+            //When the size of the string is even.
+            for (int leftIndex = index, rightIndex = index + 1; leftIndex > -1 && rightIndex < word.length(); leftIndex--, rightIndex++)
             {
-                final var leftLetter = word.charAt(left);
-                final var rightLetter = word.charAt(right);
-                if (leftLetter == rightLetter)
-                {
-                    final var substring = word.substring(left, right + 1);
-                    words.add(substring);
+                final var left = word.charAt(leftIndex);
+                final var right = word.charAt(rightIndex);
+                if(left == right) {
+                    final var palindrome = word.substring(leftIndex, rightIndex + 1);
+                    palindromes.add(palindrome);
                     continue;
                 }
                 break;
             }
         }
-        return words.poll();
+        return palindromes.isEmpty() ? "" : palindromes.poll();
     }
 }

@@ -2,9 +2,7 @@ package com.custodio.study.neetcode.microsoft;
 
 import org.junit.Test;
 
-import java.util.Optional;
 import java.util.PriorityQueue;
-import java.util.Queue;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,16 +26,14 @@ public class KthLargestElementInAnArray
 
     public int findKthLargest(final int[] numbers, final int target)
     {
-        final Queue<Integer> heap = new PriorityQueue<>();
+        final var queue = new PriorityQueue<Integer>();
 
-        for (final var number : numbers)
-        {
-            heap.add(number);
-            if (heap.size() > target)
-            {
-                heap.poll();
+        for(final var number : numbers) {
+            queue.add(number);
+            if(queue.size() > target) {
+                queue.poll();
             }
         }
-        return Optional.ofNullable(heap.peek()).orElse(-1);
+        return queue.isEmpty() ? -1 : queue.poll();
     }
 }

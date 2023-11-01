@@ -38,11 +38,11 @@ public class ReverseInteger
         {
             if (result > MAX_VALUE / 10)
             {
-                return 0;
+                return -1;
             }
-            carrier = (number % 10);
-            result = (10 * result) + (carrier);
+            carrier = number % 10;
+            result = (result * 10) + carrier;
         }
-        return x < 0 ? -result : result;
+        return x > 0 ? result : result * -1;
     }
 }
